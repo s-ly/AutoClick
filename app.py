@@ -3,19 +3,11 @@
 import pyautogui # основной модуль
 import time
 
-# screenWidth, screenHeight = pyautogui.size() # Get the size of the primary monitor.
-# print(screenWidth, screenHeight)
-# currentMouseX, currentMouseY = pyautogui.position() # Get the XY position of the mouse.
-# print(currentMouseX, currentMouseY)
-# pyautogui.moveTo(1000, 150) # Move the mouse to XY coordinates.
-# pyautogui.click('images/img_02.png')
 
 sleep_time = 1
 iterations = 1
 step = 0
-
-
-
+step_sum = 10
 
 
 def searchDrag(img):
@@ -31,91 +23,94 @@ def searchDrag(img):
         pyautogui.moveTo(img_center.x, img_center.y, speedMove)
         return True
     else:        
-        print('No found: ' + img)
-        # pyautogui.move(10, 10, 1)
-        # searchDrag(img)
+        # print('No found: ' + img)
+        log('No found: ' + img)
         return False
 
 
+# def pause():
+#     print('спим 0.75 сек')
+#     time.sleep(0.75)
 
-def pause():
-    print('спим 0.75 сек')
-    time.sleep(0.75)
+def log(mess):
+    global iterations
+    print('Цикл: ' + str(iterations) + ' - ' + mess)
 
 
 def step_m100():
     global iterations    
-    print('############################# Итерация: ' + str(iterations))
+    # print('############################# Итерация: ' + str(iterations))
 
-    print('\nШаг m100: старт')
-    print('Поис адресной строки')
+    # print('\nШаг m100: старт')
+    # print('Поис адресной строки')
+    log('Шаг m100: старт')
+    log('Поис адресной строки')
     if searchDrag('images/img_14.png'):
-        print('Шаг m100: адресная строка найден')
+        # print('Шаг m100: адресная строка найден')
+        log('Шаг m100: адресная строка найден')
     else:
-        print('Шаг m100: не найден адресная строка')
+        log('Шаг m100: не найден адресная строка')
         pyautogui.move(10, 10, 1)
         step_m100() # повторный вызав step_m100
         return
     pyautogui.move(300, 0, 1) # смешаем курсор вправо
     pyautogui.click(button='right')
-    print('Шаг m100: ок')
+    log('Шаг m100: ок\n')
     step_m101()
 
 
 def step_m101():
-    print('\nШаг m101: старт')
-    print('Поис адресной строки и Вставка')
+    log('Шаг m101: старт')
+    log('Поис адресной строки и Вставка')
     if searchDrag('images/img_15.png'):
-        print('Шаг m101: вставить найден')
+        log('Шаг m101: вставить найден')
     else:
-        print('Шаг m101: не найден вставить')
+        log('Шаг m101: не найден вставить')
         pyautogui.move(10, 10, 1)
         step_m100() # повторный вызав step_m100
         return
     pyautogui.click()    
     pyautogui.press('enter')
-    print('Шаг m101: ок')
-    pause()
+    log('Шаг m101: ок\n')
+    time.sleep(0.75)
     step_m102()
 
 
 def step_m102():
-    # step = 0
-    print('\nШаг m102: старт')
-    print('принять куки')
+    log('Шаг m102: старт')
+    log('принять куки')
+    global step
+    global step_sum
+    global iterations
+
     if searchDrag('images/img_16.png'):
-        print('Шаг m102: вставить Принять куки')
-        global step
-        step = 0
+        log('Шаг m102: НАЙДЕН Принять куки')
     else:
-        # global step
         step = step + 1
-        print('Шаг m102: не найден Принять куки, step: ' + str(step))
-        if step == 50:
-            print('Перезапуск цикла')
-            # step_m100()
-            global iterations
+        log('Шаг m102: не найден Принять куки, step: ' + str(step))
+        if step > step_sum:
+            log('Глобальный перезапуск цикла')
+            step = 0
             iterations = iterations - 1
             step_12()
             return
         else:
-            pyautogui.move(10, 10, 1)
+            pyautogui.move(5, 5, 1)
             step_m102() # повторный вызав step_m102
             return
     pyautogui.click()    
-    # pyautogui.press('enter')
-    print('Шаг m102: ок')
-    pause()
+    log('Шаг m102: ок\n')
+    time.sleep(0.75)
     step_m103()
 
 
 def step_m103():
-    print('\nШаг m103: старт')
-    print('расширить окно')
+    log('Шаг m103: старт')
+    log('расширить окно')
     if searchDrag('images/img_17.png'):
-        print('Шаг m103: ..')
+        log('Шаг m103: ..')
     else:
-        print('Шаг m103: ..')
+        log('Шаг m103: ..')
         pyautogui.move(10, 10, 1)
         step_m103() # повторный вызав step_m103
         return
@@ -123,8 +118,8 @@ def step_m103():
     # pyautogui.press('enter')
     pyautogui.move(26, 0, 1)
     pyautogui.drag(100, 0, 1, button='left')
-    print('Шаг m103: ок')
-    pause()
+    log('Шаг m103: ок\n')
+    time.sleep(0.75)
     step_01()
 
 
@@ -148,246 +143,229 @@ def step_m103():
 
 
 def step_01():
-    print('\nШаг 1: старт')
-    print('Едем на шапку и прыгаем вниз')
+    log('Шаг 1: старт')
+    log('Едем на шапку и прыгаем вниз')
     if searchDrag('images/img_05.png'):
-        print('Шаг 1: логотип найден')
+        log('Шаг 1: логотип найден')
     else:
-        print('Шаг 1: не найден логотип')
+        log('Шаг 1: не найден логотип')
         pyautogui.move(10, 10, 1)
         step_01() # повторный вызав 1-г шага
         return
     pyautogui.move(10, 300, 1) # смешаем курсор вниз
-    print('Шаг 1: ок')
+    log('Шаг 1: ок\n')
     step_02()
 
 
 def step_02():
-    print('\nШаг 2: старт')
-    print('Ищем шестерёнку и жмём')
+    log('Шаг 2: старт')
+    log('Ищем шестерёнку и жмём')
     if searchDrag('images/img_04.png'):
-        print('Шаг 2: шестерёнка найден')
+        log('Шаг 2: шестерёнка найден')
     elif searchDrag('images/img_18.png'):
-        print('Шаг 1: логотип найден')
+        log('Шаг 1: логотип найден')
     else:
-        print('Шаг 2: не найдена шестерёнка')
+        log('Шаг 2: не найдена шестерёнка')
         pyautogui.move(10, 10, 1)
         step_02() # повторный вызао 2-г шага
         return
     pyautogui.click()
-    print('Шаг 2: ок')
-    pause()
+    log('Шаг 2: ок\n')
+    time.sleep(0.75)
     step_03()
 
 
 def step_03():
-    print('\nШаг 3: старт')
-    print('Ищем скорость и жмём')
+    log('Шаг 3: старт')
+    log('Ищем скорость и жмём')
     if searchDrag('images/img_08.png'):
-        print('Шаг 3: скорость найден')
+        log('Шаг 3: скорость найден')
     else:
-        print('Шаг 3: не найдена скорость')
+        log('Шаг 3: не найдена скорость')
         pyautogui.move(10, 10, 1)
-        print('Шаг 3: повторный вызов шага 2')
+        log('Шаг 3: повторный вызов шага 2')
         step_02() # повторный вызао 2-г шага
         return
     pyautogui.click()
-    print('Шаг 3: ок')
-    pause()
+    log('Шаг 3: ок\n')
+    time.sleep(0.75)
     step_04()
 
 
 def step_04():
-    print('\nШаг 4: старт')
-    print('Ищем 0.25x потом скролим')
+    log('Шаг 4: старт')
+    log('Ищем 0.25x потом скролим')
     if searchDrag('images/img_12.png'):
-        print('Шаг 4: 0.25x найден')
+        log('Шаг 4: 0.25x найден')
     else:
-        print('Шаг 4: не найдена 0.25x')
+        log('Шаг 4: не найдена 0.25x')
         pyautogui.move(10, 10, 1)
-        print('Шаг 4: повторный вызов шага 2')
+        log('Шаг 4: повторный вызов шага 2')
         step_02() # повторный вызао 2-г шага
         return
     pyautogui.scroll(-300)
-    print('Шаг 4: ок')
-    pause()
+    log('Шаг 4: ок\n')
+    time.sleep(0.75)
     step_05()
 
 
 def step_05():
-    print('\nШаг 5: старт')
-    print('Ищем 2x потом нажимаем')
+    log('Шаг 5: старт')
+    log('Ищем 2x потом нажимаем')
     if searchDrag('images/img_09.png'):
-        print('Шаг 5: 2x найден')
+        log('Шаг 5: 2x найден')
     else:
-        print('Шаг 5: не найдена 2x')
+        log('Шаг 5: не найдена 2x')
         pyautogui.move(10, 10, 1)
-        print('Шаг 5: повторный вызов шага 2')
+        log('Шаг 5: повторный вызов шага 2')
         step_02() # повторный вызао 2-г шага
         # step_05() # повторный вызао 2-г шага
         return
     pyautogui.click()
-    print('Шаг 5: ок')
-    pause()
+    log('Шаг 5: ок\n')
+    time.sleep(0.75)
     step_06()
 
 
 def step_06():
-    print('\nШаг 6: старт')
-    print('Ищем шестерёнку и отводим к ней')
+    log('Шаг 6: старт')
+    log('Ищем шестерёнку и отводим к ней')
     if searchDrag('images/img_04.png'):
-        print('Шаг 2: шестерёнка найден')
+        log('Шаг 2: шестерёнка найден')
     elif searchDrag('images/img_18.png'):
-        print('Шаг 1: логотип найден')
+        log('Шаг 1: логотип найден')
     else:
-        print('Шаг 2: не найдена шестерёнка')
+        log('Шаг 2: не найдена шестерёнка')
         pyautogui.move(10, 10, 1)
         step_06() # повторный вызао 6-г шага
         return
-    print('Шаг 6: ок')
-    pause()
+    log('Шаг 6: ок\n')
+    time.sleep(0.75)
     step_07()
 
 
 def step_07():
-    print('\nШаг 7: старт')
-    print('Ищем качество и жмём')
+    log('Шаг 7: старт')
+    log('Ищем качество и жмём')
     if searchDrag('images/img_10.png'):
-        print('Шаг 7: качество найден')
+        log('Шаг 7: качество найден')
     else:
-        print('Шаг 7: не найдена качество')
+        log('Шаг 7: не найдена качество')
         pyautogui.move(10, 10, 1)
         step_06() # повторный вызао 6-г шага
         return
     pyautogui.click()
-    print('Шаг 7: ок')
-    pause()
+    log('Шаг 7: ок\n')
+    time.sleep(0.75)
     step_08()
 
 
 def step_08():
-    print('\nШаг 8: старт')
-    print('Ищем 1080 и скрол')
+    log('Шаг 8: старт')
+    log('Ищем 1080 и скрол')
     if searchDrag('images/img_13.png'):
-        print('Шаг 8: 1080 найден')
+        log('Шаг 8: 1080 найден')
     else:
-        print('Шаг 8: не найдена 1080')
+        log('Шаг 8: не найдена 1080')
         pyautogui.move(10, 10, 1)
         step_06() # повторный вызао 6-г шага
         return
     pyautogui.scroll(-300)
-    pause()
-    print('Шаг 8: ок')
+    time.sleep(0.75)
+    log('Шаг 8: ок\n')
     step_09()
 
 
 def step_09():
-    print('\nШаг 9: старт')
-    print('Ищем 144 и жмём')
+    log('Шаг 9: старт')
+    log('Ищем 144 и жмём')
     if searchDrag('images/img_11.png'):
-        print('Шаг 9: 144 найден')
+        log('Шаг 9: 144 найден')
     else:
-        print('Шаг 9: не найдена 144')
+        log('Шаг 9: не найдена 144')
         pyautogui.move(10, 10, 1)
         step_06() # повторный вызао 6-г шага
         return
     pyautogui.click()
-    pause()
-    print('Шаг 9: ок')
+    time.sleep(0.75)
+    log('Шаг 9: ок\n')
     step_10()
 
 
 def step_10():
-    print('\nШаг 10: старт')
-    print('Едем на шапку(2) и прыгаем вправо')
+    log('Шаг 10: старт')
+    log('Едем на шапку(2) и прыгаем вправо')
     if searchDrag('images/img_05.png'):
-        print('Шаг 10: логотип найден')
+        log('Шаг 10: логотип найден')
     else:
-        print('Шаг 10: не найден логотип')
+        log('Шаг 10: не найден логотип')
         pyautogui.move(10, 10, 1)
         step_10() # повторный вызав 10-г шага
         return
     pyautogui.move(100, 0, 1) # смешаем курсор вправо
     pyautogui.click()
     pyautogui.move(10, 300, 1) # смешаем курсор вниз
-    print('Шаг 10: ок')
+    log('Шаг 10: ок\n')
     step_11()
 
 
 def step_11():
-    print('\nШаг 11: старт')
+    log('Шаг 11: старт')
     global sleep_time
-    print('сон... ' + str(sleep_time))    
-    time.sleep(sleep_time)
-    print('Шаг 11: ок')
+    log('сон... ' + str(sleep_time))    
+    i = sleep_time
+    while i > 0:
+        log(str(i))
+        time.sleep(1)
+        i = i - 1
+
+    log('Шаг 11: ок\n')
     step_12()
 
 
 def step_12():
-    print('\nШаг 12: старт')
-    print('Ищем меню Тора и жмём')
+    log('Шаг 12: старт')
+    log('Ищем меню Тора и жмём')
     if searchDrag('images/img_17.png'):
-        print('Шаг 12: 144 найден')
+        log('Шаг 12: 144 найден')
     else:
-        print('Шаг 12: не найдена 144')
+        log('Шаг 12: не найдена 144')
         pyautogui.move(5, 5, 1)
         pyautogui.move(-5, -5, 1)
         step_12() # повторный вызао 12-г шага
         return
     pyautogui.click()
-    pause()
-    print('Шаг 12: ок')
+    time.sleep(0.75)
+    log('Шаг 12: ок\n')
     step_13()
 
 
 def step_13():
-    print('\nШаг 13: старт')
-    print('Ищем "Новая личность" и жмём')
+    log('Шаг 13: старт')
+    log('Ищем "Новая личность" и жмём')
     if searchDrag('images/img_22.png'):
-        print('Шаг 13: "Новая личность" найден')
+        log('Шаг 13: "Новая личность" найден')
     else:
-        print('Шаг 13: не найдена "Новая личность"')
+        log('Шаг 13: не найдена "Новая личность"')
         pyautogui.move(1, 1, 1)
         pyautogui.move(-1, -1, 1)
         step_12() # повторный вызао 13-г шага
         return
     pyautogui.click()
-    print('Шаг 13: ок')
-    pause()
-    pause()
-    pause()
-    pause()
-    pause()
+    log('Шаг 13: ок\n')
+    time.sleep(4)
     global iterations
     iterations = iterations + 1
     step_m100()
 
-# def step_11():
-#     print('\nШаг 11: старт')
-#     print('Распознавание конца ролика')
-#     if searchDrag('images/img_19.png'):
-#         print('Шаг 11: конца ролика найден')
-#     elif searchDrag('images/img_20.png'):
-#         print('Шаг 11: конца ролика найден')
-#     elif searchDrag('images/img_21.png'):
-#         print('Шаг 11: "конца ролика" найден')
-#     else:
-#         print('Шаг 11: "конца ролика" не найдена')
-#         pyautogui.move(5, 0, 0.25)
-#         pyautogui.move(-5, 0, 0.25)
-#         step_11() # повторный вызао 11-г шага
-#         return
-#     print('Шаг 11: ок')
-#     pause()
-
 
 def start():
-    print('\nПрограмма автоматического простотра РуТуб v0.1')
+    log('\nПрограмма автоматического простотра РуТуб v0.1')
     global sleep_time
     sleep_time = int(input('Сколько секунд ждать: '))
     step_m100()
     # step_11()
-    print('\nЗавершение работы программы')
+    log('\nЗавершение работы программы\n')
 
 
 start()

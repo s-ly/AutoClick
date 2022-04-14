@@ -7,7 +7,7 @@ import time
 sleep_time = 1
 iterations = 1
 step = 0
-step_sum = 25 # попытки
+step_sum = 35 # попытки
 
 
 def searchDrag(img):
@@ -142,7 +142,7 @@ def step_m103():
     # pyautogui.click()    
     # pyautogui.press('enter')
     pyautogui.move(26, 0, 1)
-    pyautogui.drag(100, 0, 1, button='left')
+    pyautogui.drag(120, 0, 1, button='left')
     log('Шаг m103: ок\n')
     time.sleep(0.75)
     step_01()

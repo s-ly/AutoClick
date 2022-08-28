@@ -1,11 +1,11 @@
-pip install opencv-python для confidence=0.9
-https://pyautogui.readthedocs.io/en/latest/screenshot.html
-https://rutube.ru/video/12f98caf703d3a67a273d8f9753c8b61/
+Релиз 0.44
 
-https://rutube.ru/video/323c58db06c5298852462a8b612c795e/
+doc.txt - документация (gin игнор)
+app.log - лог (gin игнор)
+app.py - основной
+log_app.py - лог
+test.py - разработка
+url.txt - три строчика ссылок на ролики
+папка release - релиз
+папка images - картинки для поиска
 
-Сроки окупаемости STEP'N | Возможные риски
-https://rutube.ru/video/eead88dfdedc1aaa17ff720521c9ab75/
-
-труба
-https://rutube.ru/video/5f420aec5ce30c2c336106f9fdcbf1c1/

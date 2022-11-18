@@ -1,2 +1,5 @@
+/dist/
+/__pycache__/
 app.log
 test.py
+app.spec

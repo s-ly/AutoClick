@@ -204,8 +204,8 @@ def step_new():
     if searchDrag('images/img_22.png') == False:
         return False
     pyautogui.click()
-    log('Секундная задержка')
-    time.sleep(1) # что-бы Тор успел перезапустится
+    log('2 секунда задержка')
+    time.sleep(2) # что-бы Тор успел перезапустится
     return True
 
 
@@ -222,7 +222,11 @@ def step_vk_post():
     """Ищем ссылку в посте в ВК и жмём"""
     log('Ищем новую вкладку и жмём')
     if searchDrag('images/img_32_vk_post.png') == False:
-        return False
+        if searchDrag('images/img_32_vkm_post.png') == False:
+            if searchDrag('images/img_32_tikm_post.png') == False:
+                if searchDrag('images/img_vk_post2.png') == False:
+                    if searchDrag('images/img_mvk_post2.png') == False:
+                        return False
     time.sleep(2) # с сылкой что-то происходит
     pyautogui.click()
     return True
@@ -299,23 +303,29 @@ def read_url ():
     with open(url_fileName, "r") as file:
         
         print ('Загрузка url:')
+        url_1_note = file.readline()
         url_1 = file.readline()
+        url_2_note = file.readline()
         url_2 = file.readline()
+        url_3_note = file.readline()
         url_3 = file.readline()
 
         # убираем в конце знак переноса строки
         url_1 = url_1[:-1]
         url_2 = url_2[:-1]
         url_3 = url_3[:-1]
+        url_1_note = url_1_note[:-1]
+        url_2_note = url_2_note[:-1]
+        url_3_note = url_3_note[:-1]
 
-        print(url_1)
-        print(url_2)
-        print(url_3)
+        print(url_1_note + ': ' + url_1)
+        print(url_2_note + ': ' + url_2)
+        print(url_3_note + ': ' + url_3)
 
         # убираем описание из url-строки
-        url_1 = url_1[0:url_parser_index]
-        url_2 = url_2[0:url_parser_index]
-        url_3 = url_3[0:url_parser_index]
+        # url_1 = url_1[0:url_parser_index]
+        # url_2 = url_2[0:url_parser_index]
+        # url_3 = url_3[0:url_parser_index]
 
 
 def random_url():
@@ -355,7 +365,8 @@ def main_cicle():
 
     # log('Запуск \n', True)
     log_app.log_message('Запуск', True)
-    print('\nПрограмма автоматического простотра РуТуб v0.6')
+    print('\nПрограмма автоматического просмотра РуТуб v0.63')
+    print('\nВНИМАНИЕ!!! если есть ссылки на TikTok, то Tor в обычном (не мобильном) режиме.')
     # print('Если экран retina, то подмени картинки в папке images на картинки с retina!')
 
     while True:

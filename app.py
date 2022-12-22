@@ -22,9 +22,52 @@ url_parser_index = 57
 url_1 = None
 url_2 = None
 url_3 = None
+
+
+# суперфлаг инициализации управляющих флагов.
+# При сбое, когда попытки шага кончились, мы запускаем цикл по новой.
+# Нужно обнулить все управляющие флаги.
+# Она находится в True в начале, для первой инициации, далее, переводим его 
+# в True только при сбое, тоесть когда кончились попытки шагов  и нужно всё перезапустить.
+superflag_init = True
+
+# popitki = 43
+reset = 0
+
+
 ####################################################№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
 # Шаги
 ####################################################№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
+def restart_browser():
+    """Перезапуск Браузера если вышло сообщение: Что-то пошло не так."""
+    log('Возможно упал Тор')    
+    if searchDrag('images/error1.png') == False:
+        return False
+    log('Ошибка: Что-то пошло не так!!!')
+    log('Перезагрузка браузера.')
+    
+    log('(restart) Ищем кнопку меню Тора')
+    if searchDrag('images/img_17.png') == False:
+        if searchDrag('images/img_28.png') == False:
+            if searchDrag('images/img_29.png') == False:
+                return False
+    pyautogui.click() 
+    
+    log('(restart) Ищем Выход')
+    if searchDrag('images/exit1.png') == False:
+        return False
+    pyautogui.click() 
+    time.sleep(3) # что-бы Тор успел выключится
+
+    log('(restart) Ищем значёк Тора')
+    if searchDrag('images/tor_start.png') == False:
+        return False
+    pyautogui.click() 
+    time.sleep(3) # что-бы Тор успел включится
+    
+    return True
+
+
 def step_adres():
     """Поис адресной строки"""
     log('Поис адресной строки')
@@ -46,16 +89,90 @@ def step_paste():
     return True
 
 
+
+# def step_cuc():
+#     """
+#     Жмёт на куки двух видов.
+#     """
+#     log('принять куки')
+#     if searchDrag('images/img_16.png') == False:
+#         if searchDrag('images/img_30.png') == False:
+#             return False
+#     pyautogui.click()
+#     return True
+
 def step_cuc():
     """
     Жмёт на куки двух видов.
     """
+    global reset
+    # log('10 ^')
+    # time.sleep(10) # ТЕХНИЧЕСКА
+
+    # суперфлаг инициализации управляющих флагов.
+    # global superflag_init
+
+    # Флаг для определения нашли куки или "Ошибку"
+    if_flag = 0
+
     log('принять куки')
     if searchDrag('images/img_16.png') == False:
         if searchDrag('images/img_30.png') == False:
+            if searchDrag('images/error1.png') == False:
+                if searchDrag('images/error2.png') == False:
+                    if searchDrag('images/error3.png') == False:
+                        return False
+                else:
+                    # найдена "ОШИБКА"
+                    if_flag = 1
+            else:
+                # найдена "ОШИБКА"
+                if_flag = 1
+    
+    if if_flag == 0:
+        pyautogui.click()
+        return True
+    else:
+        # нужен рестарт Браузера
+        log('Перезагрузка браузера.')
+    
+        log('(restart) Ищем кнопку меню Тора')
+        if searchDrag('images/img_17.png') == False:
+            if searchDrag('images/img_28.png') == False:
+                if searchDrag('images/img_29.png') == False:
+                    return False
+        
+        
+        
+        
+        
+        
+        
+        
+        # time.sleep(1)
+        pyautogui.move(0, -30, 1)
+        pyautogui.click() 
+        
+        # log('(restart) Ищем Выход')
+        # if searchDrag('images/exit1.png') == False:
+        #     return False
+        # time.sleep(1)
+        # pyautogui.click() 
+        # time.sleep(3) # что-бы Тор успел выключится
+
+        log('(restart) Ищем значёк Тора')
+        if searchDrag('images/tor_start.png') == False:
             return False
-    pyautogui.click()
-    return True
+        time.sleep(1)
+        pyautogui.click() 
+        time.sleep(5) # что-бы Тор успел включится
+
+        # log('10 ^^')
+        # time.sleep(10) # ТЕХНИЧЕСКА
+        
+        # superflag_init = True
+        # reset = 1
+        return False
 
 
 def step_winsiz():
@@ -86,7 +203,9 @@ def step_logo():
         pyautogui.press('enter')
 
     if searchDrag('images/img_05.png') == False:
-        return False
+        if searchDrag('images/logo_v2.png') == False:
+            if searchDrag('images/logo_v3.png') == False:
+                return False
     pyautogui.move(10 * retina, 300 * retina, 1) # смешаем курсор вниз
     return True
 
@@ -95,7 +214,9 @@ def step_ses():
     log('Ищем шестерёнку и жмём')
     if searchDrag('images/img_04.png')  == False:        
         if searchDrag('images/img_18.png') == False:
-            return False
+            if searchDrag('images/img_18v2.png') == False:
+                if searchDrag('images/img_18v3.png') == False:
+                    return False
     time.sleep(5) # из-за рекламы нужно подождать с нажатием
     pyautogui.move(10, 10, 1)
     pyautogui.move(-10, -10, 1) 
@@ -131,7 +252,9 @@ def step_sis_m():
     log('Ищем шестерёнку и отводим к ней')
     if searchDrag('images/img_04.png')  == False:        
         if searchDrag('images/img_18.png') == False:
-            return False
+            if searchDrag('images/img_18v2.png') == False:
+                if searchDrag('images/img_18v3.png') == False:
+                    return False
     return True
 
 
@@ -163,9 +286,11 @@ def step_144():
 def step_logo2():
     log('Едем на шапку(2) и прыгаем вправо')
     if searchDrag('images/img_05.png') == False:
-        return False
+        if searchDrag('images/logo_v2.png') == False:
+            if searchDrag('images/logo_v3.png') == False:
+                return False
     pyautogui.move(100 * retina, 0, 1) # смешаем курсор вправо
-    pyautogui.click()
+    # pyautogui.click()
     pyautogui.move(10 * retina, 300 * retina, 1) # смешаем курсор вниз
     return True
 
@@ -269,24 +394,37 @@ def searchDrag(img):
         return False
 
 
-def step(f):
-    """Отработка попыток шагов"""
-    popitki = 35
+def step(f, reset = 0):
+    """Отработка попыток шагов. В случае глобального сбоя (кончильсь попытки)
+    включает суперФлаг инициации управляющих флагов."""
+    # суперфлаг инициализации управляющих флагов.
+    global superflag_init
+    # global popitki
+    
+    popitki = 43
+    # if reset == 1:
+    #     popitki = 0
+    # log('reset ' + str(reset))
+    # log('pop ' + str(popitki))
+    # popitki = 5
     i = True
     while i:
         func_run = f()
         if func_run:
-            log('УДАЧНЫЙ шаг')
+            log('шаг -> ок')
             time.sleep(0.75)
             return True
         else:
+            log('шаг -> ошибка')
             popitki = popitki - 1
             if popitki != 0:
-                log('попытка шага: ' + str(popitki))      
+                log('Осталось попыток: ' + str(popitki))      
                 pyautogui.move(10, 10, 1)
                 pyautogui.move(-10, -10, 1)          
             else:
-                log('кончилиси попытки шага')
+                log('Кончилиси попытки шага !!!')
+                log('Включаю суперФлаг иницилизации')
+                superflag_init = True
                 return False
 
 
@@ -352,6 +490,9 @@ def random_url():
     print(url_3)
 
 
+###################################################################################################
+# Главный цикл
+###################################################################################################
 def main_cicle():
     """главный цикл"""
     # global retina
@@ -363,14 +504,20 @@ def main_cicle():
     global url_3
     global url_parser_index
 
+    # суперфлаг инициализации управляющих флагов.
+    global superflag_init
+
+    global reset
+
     # log('Запуск \n', True)
     log_app.log_message('Запуск', True)
-    print('\nПрограмма автоматического просмотра РуТуб v0.63')
+    print('\nПрограмма автоматического просмотра РуТуб v0.67')
     print('\nВНИМАНИЕ!!! если есть ссылки на TikTok, то Tor в обычном (не мобильном) режиме.')
     # print('Если экран retina, то подмени картинки в папке images на картинки с retina!')
 
     while True:
-        vk_post_flag_input = input('Нужен переход с ВК? Если ДА введите 2 и нажмите Ввод, если обычный то 1: ')
+        vk_post_flag_input = input('Нужен переход с ВК? ' +
+        'Если ДА введите 2 и нажмите Ввод, если обычный то 1: ')
         # retina_input = input('Нужен переход с ВК? Если ДА введите 2 и нажмите Ввод, если обычный то 1: ')
         # if retina_input == '1' or retina_input == '2':
         #     retina_input = int(retina_input)
@@ -394,14 +541,34 @@ def main_cicle():
     # pyperclip.copy(url_1) # копируем в буфер обмена
 
     time_sleep = int(input('Сколько секунд ждать: '))    
-    flag_new_tab = True # нужна ли новая вкладка
-    flag_new = True # нужна ли новая личность
-    flag_cuc = True # нужно ли куки и расширить окно
-    flag_play = False # нужно ли нажимать на play (нужно на второй и третьей вкладке)
-    flag_url = False # нужно ли url_2
-    flag_url_3 = False # нужна ли URL 3
+
+
+
+    # Флаги управления циклом
+    # flag_new_tab = True # нужна ли новая вкладка
+    # flag_new = True # нужна ли новая личность
+    # flag_cuc = True # нужно ли куки и расширить окно
+    # flag_play = False # нужно ли нажимать на play (нужно на второй и третьей вкладке)
+    # flag_url = False # нужно ли url_2
+    # flag_url_3 = False # нужна ли URL 3
 
     while True:   
+        # СуперИнициализация управляющих флагов ---------------------------------------------------
+        if superflag_init == True:  
+
+            # Флаги управления циклом
+            flag_new_tab = True # нужна ли новая вкладка
+            flag_new = True # нужна ли новая личность
+            flag_cuc = True # нужно ли куки и расширить окно
+            flag_play = False # нужно ли нажимать на play (нужно на второй и третьей вкладке)
+            flag_url = False # нужно ли url_2
+            flag_url_3 = False # нужна ли URL 3
+            
+            # Закрываем суперфлаг
+            superflag_init = False
+        # -----------------------------------------------------------------------------------------
+
+
         if flag_url_3 == True:
             pyperclip.copy(url_3) # копируем в буфер обмена url 3
         elif flag_url == True:
@@ -415,14 +582,14 @@ def main_cicle():
             if step(step_new) != True: continue
 
 
-        #VK##########################################################
+        #VK ---------------------------------------------------------------------------------------
         # Если нужен ВК
         # if vk_post_flag == 2:
         #     if step(step_adres) != True: continue        
         #     if step(step_paste) != True: continue
         #     if step(step_vk_post) != True: continue
             
-        #VK#########################################################
+        #VK ---------------------------------------------------------------------------------------
 
 
         if step(step_adres) != True: continue        
@@ -434,6 +601,7 @@ def main_cicle():
 
 
         if flag_cuc == True:
+            # if step(step_cuc, reset) != True: continue
             if step(step_cuc) != True: continue
             if step(step_winsiz) != True: continue
 
@@ -496,6 +664,7 @@ def main_cicle():
         time.sleep(15)
         iterations = iterations + 1
         random_url() # перемешиваем url
+        reset = 0
 ###################################################################################################
 
 
